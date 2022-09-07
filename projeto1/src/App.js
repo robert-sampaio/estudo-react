@@ -1,40 +1,31 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { Component } from "react";
 
+import { Post } from "./components/Post";
+import { loadPost } from "./utils/loadPosts";
+
 class App extends Component {
   state = {
-    posts: [
-      {
-        id: 1,
-        title: "Capítulo 1",
-        body: "Lorem ipsum",
-      },
-      {
-        id: 2,
-        title: "Capítulo 2",
-        body: "Lorem ipsum",
-      },
-      {
-        id: 3,
-        title: "Capítulo 3",
-        body: "Lorem ipsum",
-      },
-    ],
+    posts: [],
   };
+
+  async componentDidMount() {
+    await this.loadPost();
+  }
+  
+  loadPost = async () => {
+    const postsAndPhotos = await loadPost();
+    this.setState({ posts: postsAndPhotos });
+  }
 
   render() {
     const { posts } = this.state;
 
     return (
-      <div className="App">
-        {posts.map((posts) => (
-          <div key={posts.id}>
-            <h1>{posts.title}</h1>
-            <p>{posts.body}</p>
-          </div>
-        ))}
-      </div>
+      <section className="container">
+        <Post 
+        posts={posts} />
+      </section>
     );
   }
 }
